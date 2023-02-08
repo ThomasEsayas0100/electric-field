@@ -1,30 +1,7 @@
 from Charge import *
 from Arrow import *
+from EquipotentialLines import *
 pygame.init()
-
-"""
-Constant Declaration
-"""
-
-# Screen
-HEIGHT = 500
-WIDTH = 1000
-WIN = pygame.display.set_mode([WIDTH, HEIGHT])
-
-# Color
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-FPS = 60
-T = 1 / FPS
-
-# Physics Constants
-k = 8.98755 * (10 ** 9)
-g = 9.81
-e = 1.60 * (10 ** -19)
-
-# Detail
-DETAIL = 4
 
 
 def draw_window():
@@ -36,11 +13,10 @@ def draw_window():
 
     for pointCharge in PointCharge.instances:
         pointCharge.draw()
-
+    equipotential_lines()
     z.move()
 
 
-w = PointCharge((500, 250), -e)
 x = PointCharge((300, 250), e)
 y = PointCharge((700, 250), -e)
 z = Charge((100, 100))

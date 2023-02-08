@@ -4,6 +4,7 @@ Dependencies; Since every class relies on these dependencies, they are imported 
 
 from math import sin, cos, atan2
 import matplotlib.pyplot as plt
+from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import pygame
@@ -29,4 +30,4 @@ e = 1.60 * (10 ** -19)
 DETAIL = 4
 
 # Pixel to Meter Ratio
-PIXRATIO = 2.645833 * 10 ** -8
+PIX_RATIO = 2.645833 * 10 ** -10

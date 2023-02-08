@@ -37,14 +37,12 @@ def proximity_sort(points):
     return ordered_points
 
 def heatmap(data):
-    fig = plt.figure()
-    ax = plt.axes(projection='3d')
 
-    x = list([x[0] for x in data.keys()])
-    y = list([y[1] for y in data.keys()])
+    x = list([x[0]*PIX_RATIO for x in data.keys()])
+    y = list([y[1]*PIX_RATIO for y in data.keys()])
     intensity = list([intensity for intensity in data.values()])
     Z = intensity
-
+    print(Z)
     #print(len(x), y.shape, Z.shape)
 
     # Plot the heatmap
@@ -53,14 +51,27 @@ def heatmap(data):
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Intensity')
+    x_scale = 1
+    y_scale = 1/2
+    z_scale = 1
+
+    scale = np.diag([x_scale, y_scale, z_scale, 1.0])
+    scale = scale * (1.0 / scale.max())
+    scale[3, 3] = 1.0
+
+    def short_proj():
+        return np.dot(Axes3D.get_proj(ax), scale)
+
+    ax.get_proj = short_proj
 
     for i in range(len(x)):
         if Z[i] == float('inf'):
-            Z[i] = sys.maxsize
+            Z[i] = 0
         if Z[i] == -float('inf'):
-            Z[i] = -sys.maxsize
+            Z[i] = 0
     # Plot the surface
-    ax.plot_trisurf(x, y, Z, linewidth=0, antialiased=True)
+    ax.plot_trisurf(x, y, Z, linewidth=0.1, antialiased=True, cmap=cm.jet)
+    ax.tricontourf(x, y, Z, zdir='z', offset=-1.5 * 10 ** -10, cmap=cm.coolwarm)
 
     # Show the plot
     plt.show()
