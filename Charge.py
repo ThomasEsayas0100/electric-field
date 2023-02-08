@@ -16,8 +16,8 @@ class Charge:
 
         for charge in PointCharge.instances:
             # Setting up formula for Electric Field calc
-            radius = np.hypot(charge.xy[1] - self.xy[1], charge.xy[0] - self.xy[0])
-            e_mag = k * charge.charge / radius
+            radius = np.hypot(charge.xy[1] - self.xy[1], charge.xy[0] - self.xy[0])*PIXRATIO
+            e_mag = k * charge.charge / radius*PIXRATIO
             ang = atan2(charge.xy[1] - self.xy[1], charge.xy[0] - self.xy[0])
             # Calculating the Electric Field vector of current charge within for loop
             e_current = np.array([e_mag * cos(ang), e_mag * sin(ang)])
