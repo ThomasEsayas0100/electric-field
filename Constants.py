@@ -25,3 +25,6 @@ e = 1.60 * (10 ** -19)
 
 # Detail
 DETAIL = 4
+
+# Pixel to Meter Ratio
+PIXRATIO = 2.645833 * 10 ** -8
