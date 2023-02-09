@@ -2,7 +2,7 @@
 Dependencies; Since every class relies on these dependencies, they are imported here, and this module is imported
 """
 
-from math import sin, cos, atan2
+from math import sin, cos, radians as rad, atan2
 import numpy as np
 import pygame
 
