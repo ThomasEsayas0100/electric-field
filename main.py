@@ -5,7 +5,11 @@ pygame.init()
 
 
 def draw_window():
-    WIN.fill(WHITE)
+    heatmap3D(potential_distribution())
+
+    alpha_image_surface = pygame.image.load('ex.png').convert_alpha()
+    WIN.blit(alpha_image_surface, (0, 0))
+
     for i in range(int(WIDTH / (100 / DETAIL))):
         for j in range(int(HEIGHT / (50 / DETAIL))):
             a = Arrow((i * 104 / DETAIL, j * 104 / DETAIL))
@@ -13,7 +17,6 @@ def draw_window():
 
     for pointCharge in PointCharge.instances:
         pointCharge.draw()
-    equipotential_lines()
     z.move()
 
 
