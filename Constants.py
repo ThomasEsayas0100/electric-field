@@ -2,10 +2,12 @@
 Dependencies; Since every class relies on these dependencies, they are imported here, and this module is imported
 """
 
-from math import sin, cos, atan2
+
+from math import sin, cos, radians as rad, atan2
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
+
 import numpy as np
 import matplotlib.image as mpimg
 import pygame

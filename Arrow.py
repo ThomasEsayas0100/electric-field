@@ -26,4 +26,14 @@ class Arrow:
         start_pos = (self.xy[0] - length / 2 * cos(self.dir), self.xy[1] - length / 2 * sin(self.dir))
         end_pos = (self.xy[0] + length / 2 * cos(self.dir), self.xy[1] + length / 2 * sin(self.dir)),
 
-        pygame.draw.line(WIN, BLACK, start_pos, end_pos, width=width)
+        pygame.draw.line(WIN, BLACK, start_pos, end_pos, width=width)  # Main Line
+
+        a = np.array(np.array(end_pos) - np.array(start_pos))
+        b = np.array(start_pos)
+        b += np.array([5*cos(self.dir + rad(180-15)), 5*sin(self.dir + rad(180-15))])
+
+        pygame.draw.line(WIN, BLACK, (a + b)[0], end_pos, width=width)  # Main Line
+
+        b = np.array(start_pos)
+        b += np.array([5 * cos(self.dir - rad(180 - 15)), 5 * sin(self.dir - rad(180 - 15))])
+        pygame.draw.line(WIN, BLACK, (a + b)[0], end_pos, width=width)
