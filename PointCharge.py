@@ -12,4 +12,5 @@ class PointCharge:
         self.xy = xy
 
     def draw(self):
-        pygame.draw.circle(WIN, BLACK, self.xy, 10)
+        #pygame.draw.circle(WIN, BLACK, self.xy, 10)
+        return [self.xy[0], self.xy[1]]

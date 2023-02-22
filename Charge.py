@@ -1,7 +1,10 @@
 from PointCharge import *
 
 class Charge:
+    instances = []
+
     def __init__(self, xy):
+        self.__class__.instances.append(self)
         self.vel = np.array([0, 0])
         self.xy = xy
         self.f_total = np.array([0, 0])

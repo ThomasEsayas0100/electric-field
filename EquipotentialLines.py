@@ -47,18 +47,20 @@ def heatmap(data):
 
     ax.get_proj = short_proj
 
+    maximum = max(list(value for value in Z if abs(value) != float('inf')))
+    minimum = min(list(value for value in Z if abs(value) != float('inf')))
+
+
     for i in range(len(x)):
         if Z[i] == float('inf'):
-            Z[i] = 0
-            Z[i] = max(Z)
+            Z[i] = maximum
         if Z[i] == -float('inf'):
-            Z[i] = 0
-            Z[i] = min(Z)
+            Z[i] = minimum
 
     # Plot the surface
-    #ax.plot_trisurf(x, y, Z, linewidth=0.1, antialiased=True, cmap=cm.jet)
     ax.tricontourf(x, y, Z, zdir='z', offset=-1.5 * 10 ** -10, cmap=color)
 
+    plt.gca().invert_yaxis()
     fig.savefig("heatmap.png")
 
 def heatmap3D(data):
@@ -91,17 +93,18 @@ def heatmap3D(data):
 
     ax.get_proj = short_proj
 
+    maximum = max(list(value for value in Z if abs(value) != float('inf')))
+    minimum = min(list(value for value in Z if abs(value) != float('inf')))
+
     for i in range(len(x)):
         if Z[i] == float('inf'):
-            Z[i] = 0
-            Z[i] = max(Z)
+            Z[i] = maximum
         if Z[i] == -float('inf'):
-            Z[i] = 0
-            Z[i] = min(Z)
+            Z[i] = minimum
+
     # Plot the surface
     ax.plot_trisurf(x, y, Z, linewidth=0.1, antialiased=True, cmap=color)
-    # Show the plot
-    plt.show()
+    
 
 def potential_distribution():
     accuracy = 1 * 10 ** -10
@@ -117,5 +120,11 @@ def potential_distribution():
                 radius = np.hypot(charge.xy[1] - y * DENSITY, charge.xy[0] - x * DENSITY)
                 potential += k * charge.charge / radius
                 potential_distribution[(x * DENSITY, y * DENSITY)] = potential
+    # Calculate the 90th percentile of the data
+    max_threshold = np.percentile(list(potential_distribution.values()), 90)
+    min_threshold = np.percentile(list(potential_distribution.values()), 1)
 
-    return potential_distribution
+    print(min_threshold, max_threshold)
+    # Filter out any values above the threshold
+    cut_potential_distribution = {coord: volt for coord, volt in potential_distribution.items() if min_threshold <= volt <= max_threshold}
+    return cut_potential_distribution

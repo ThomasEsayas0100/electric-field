@@ -10,6 +10,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 import numpy as np
 import matplotlib.image as mpimg
+import json
 import pygame
 
 # Screen
