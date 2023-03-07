@@ -62,6 +62,7 @@ def heatmap(data):
 
     plt.gca().invert_yaxis()
     fig.savefig("heatmap.png")
+    plt.close()
 
 def heatmap3D(data):
 
@@ -104,6 +105,7 @@ def heatmap3D(data):
 
     # Plot the surface
     ax.plot_trisurf(x, y, Z, linewidth=0.1, antialiased=True, cmap=color)
+    plt.close()
     
 
 def potential_distribution():
@@ -121,10 +123,9 @@ def potential_distribution():
                 potential += k * charge.charge / radius
                 potential_distribution[(x * DENSITY, y * DENSITY)] = potential
     # Calculate the 90th percentile of the data
-    max_threshold = np.percentile(list(potential_distribution.values()), 90)
-    min_threshold = np.percentile(list(potential_distribution.values()), 1)
+    max_threshold = np.percentile(list(potential_distribution.values()), 95)
+    min_threshold = np.percentile(list(potential_distribution.values()), 5)
 
-    print(min_threshold, max_threshold)
-    # Filter out any values above the threshold
+    # Filter out any values above/below the threshold
     cut_potential_distribution = {coord: volt for coord, volt in potential_distribution.items() if min_threshold <= volt <= max_threshold}
     return cut_potential_distribution

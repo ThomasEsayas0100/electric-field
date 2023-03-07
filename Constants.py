@@ -3,7 +3,8 @@ Dependencies; Since every class relies on these dependencies, they are imported 
 """
 
 
-from math import sin, cos, radians as rad, atan2
+from math import sin, cos, radians as rad, atan2, dist
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
@@ -12,6 +13,8 @@ import numpy as np
 import matplotlib.image as mpimg
 import json
 import pygame
+
+matplotlib.use('Agg')
 
 # Screen
 HEIGHT = 500
