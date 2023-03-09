@@ -10,7 +10,6 @@ from PointCharge import *
 color = cm.YlOrRd
 
 def heatmap(data):
-
     x = list([x[0]*PIX_RATIO for x in data.keys()])
     y = list([y[1]*PIX_RATIO for y in data.keys()])
     intensity = list([intensity for intensity in data.values()])
@@ -47,19 +46,22 @@ def heatmap(data):
 
     ax.get_proj = short_proj
 
+    maximum = max(list(value for value in Z if abs(value) != float('inf')))
+    minimum = min(list(value for value in Z if abs(value) != float('inf')))
+
+
     for i in range(len(x)):
         if Z[i] == float('inf'):
-            Z[i] = 0
-            Z[i] = max(Z)
+            Z[i] = maximum
         if Z[i] == -float('inf'):
-            Z[i] = 0
-            Z[i] = min(Z)
+            Z[i] = minimum
 
     # Plot the surface
-    #ax.plot_trisurf(x, y, Z, linewidth=0.1, antialiased=True, cmap=cm.jet)
     ax.tricontourf(x, y, Z, zdir='z', offset=-1.5 * 10 ** -10, cmap=color)
 
+    plt.gca().invert_yaxis()
     fig.savefig("heatmap.png")
+    plt.close()
 
 def heatmap3D(data):
 
@@ -70,7 +72,7 @@ def heatmap3D(data):
     #print(len(x), y.shape, Z.shape)
 
     # Plot the heatmap
-    fig = plt.figure()
+    fig = plt.figure(frameon=False)
     ax = fig.gca(projection='3d')
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
@@ -91,21 +93,43 @@ def heatmap3D(data):
 
     ax.get_proj = short_proj
 
+    maximum = max(list(value for value in Z if abs(value) != float('inf')))
+    minimum = min(list(value for value in Z if abs(value) != float('inf')))
+
     for i in range(len(x)):
         if Z[i] == float('inf'):
-            Z[i] = 0
-            Z[i] = max(Z)
+            Z[i] = maximum
         if Z[i] == -float('inf'):
-            Z[i] = 0
-            Z[i] = min(Z)
+            Z[i] = minimum
+
     # Plot the surface
-    ax.plot_trisurf(x, y, Z, linewidth=0.1, antialiased=True, cmap=color)
-    # Show the plot
-    plt.show()
+    ax.tricontourf(x, y, Z, zdir='z', offset=-1.5 * 10 ** -10, cmap=color)
+
+    ############################
+    fig = go.Figure(data=[go.Scatter3d(
+    x= x,
+    y= y,
+    z= Z,
+    layout_yaxis_range=[-4,4],
+    mode='markers',
+    marker=dict(
+         size=3,
+         colorscale='reds',  
+         opacity=0.8
+    )
+    )])
+
+    # tight layout
+    fig.update_layout(margin=dict(l=0, r=0, b=0, t=0))
+    fig.write_html("heatmap3D.html") #Modifiy the html file
+    print("Executed")
+    # html = mpld3.fig_to_html(fig)
+    # with open('heatmap3Dt.html', 'w') as f:
+    #     f.write(html)
+    plt.close()
+    
 
 def potential_distribution():
-    accuracy = 1 * 10 ** -10
-    distribution = 1 * 10 ** -10  # Every ___ volts
     potential_distribution = dict()
 
     FREQUENCY = 100
@@ -117,5 +141,10 @@ def potential_distribution():
                 radius = np.hypot(charge.xy[1] - y * DENSITY, charge.xy[0] - x * DENSITY)
                 potential += k * charge.charge / radius
                 potential_distribution[(x * DENSITY, y * DENSITY)] = potential
+    # Calculate the 90th percentile of the data
+    max_threshold = np.percentile(list(potential_distribution.values()), 95)
+    min_threshold = np.percentile(list(potential_distribution.values()), 5)
 
-    return potential_distribution
+    # Filter out any values above/below the threshold
+    cut_potential_distribution = {coord: volt for coord, volt in potential_distribution.items() if min_threshold <= volt <= max_threshold}
+    return cut_potential_distribution

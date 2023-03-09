@@ -22,18 +22,21 @@ class Arrow:
 
     def draw(self, width=1):
         self.update()
-        length = int(100 / DETAIL)
+        length = int(100 / DETAIL) * .7
         start_pos = (self.xy[0] - length / 2 * cos(self.dir), self.xy[1] - length / 2 * sin(self.dir))
-        end_pos = (self.xy[0] + length / 2 * cos(self.dir), self.xy[1] + length / 2 * sin(self.dir)),
+        end_pos = (self.xy[0] + length / 2 * cos(self.dir), self.xy[1] + length / 2 * sin(self.dir))
 
-        pygame.draw.line(WIN, BLACK, start_pos, end_pos, width=width)  # Main Line
+        # pygame.draw.line(WIN, BLACK, start_pos, end_pos, width=width)  # Main Line
 
         a = np.array(np.array(end_pos) - np.array(start_pos))
         b = np.array(start_pos)
         b += np.array([5*cos(self.dir + rad(180-15)), 5*sin(self.dir + rad(180-15))])
+        # pygame.draw.line(WIN, BLACK, (a + b)[0], end_pos, width=width)  # Main Line
 
-        pygame.draw.line(WIN, BLACK, (a + b)[0], end_pos, width=width)  # Main Line
+        c = np.array(start_pos)
+        c += np.array([5 * cos(self.dir - rad(180 - 15)), 5 * sin(self.dir - rad(180 - 15))])
+        # pygame.draw.line(WIN, BLACK, (a + c)[0], end_pos, width=width)
 
-        b = np.array(start_pos)
-        b += np.array([5 * cos(self.dir - rad(180 - 15)), 5 * sin(self.dir - rad(180 - 15))])
-        pygame.draw.line(WIN, BLACK, (a + b)[0], end_pos, width=width)
+        return ([start_pos[0], start_pos[1]], [end_pos[0], end_pos[1]], [(a + b)[0], (a + b)[1]], [(a + c)[0], (a + c)[1]])
+
+
