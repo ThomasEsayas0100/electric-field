@@ -44,8 +44,5 @@ class Charge:
         if self.xy[1] >= 500:
             self.xy[1] = 500
 
-        pygame.draw.circle(WIN, BLACK, self.xy, 5)
-
         end_pos = (self.xy[0] + 30 * cos(ang), self.xy[1] + 30 * sin(ang))
 
-        pygame.draw.line(WIN, RED, self.xy, end_pos)

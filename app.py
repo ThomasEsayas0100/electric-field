@@ -2,7 +2,7 @@ from flask import Flask, jsonify, send_from_directory, request
 
 from Arrow import *
 from Charge import *
-from EquipotentialLines import *
+from Equipotential import *
 
 app = Flask(__name__, static_folder='static')
 
@@ -14,6 +14,11 @@ def index():
 def serve_image():
     heatmap(potential_distribution())
     return send_from_directory(app.root_path, 'heatmap.png')
+
+@app.route('/heatmap3D.html')
+def serve_image3D():
+    heatmap(potential_distribution())
+    return send_from_directory(app.root_path, 'heatmap3D.html')
 
 @app.route('/api/get_arrow', methods=['GET'])
 def arrow_data():
@@ -60,7 +65,9 @@ def update_test_charges():
             closest_dist = dist(mouse, pointCharge.xy)
             closest = pointCharge
     closest.update(mouse)
-    heatmap(potential_distribution())
+    data = potential_distribution()
+    heatmap(data)
+    heatmap3D(data)
     response = {'success': True}
     return jsonify(response)
 
