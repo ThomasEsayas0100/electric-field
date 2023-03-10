@@ -73,9 +73,13 @@ def update_test_charges():
 
 x = PointCharge((300, 250), e)
 y = PointCharge((700, 250), -e)
-l = PointCharge((500, 109), -e)
+z = PointCharge((500, 109), -e)
 
-z = Charge((100, 100))
+a = Charge((100, 100))
+b = Charge((200, 200))
+c = Charge((300, 300))
+
+
 
 
 if __name__ == '__main__':

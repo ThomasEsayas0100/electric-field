@@ -44,5 +44,3 @@ class Charge:
         if self.xy[1] >= 500:
             self.xy[1] = 500
 
-        end_pos = (self.xy[0] + 30 * cos(ang), self.xy[1] + 30 * sin(ang))
-

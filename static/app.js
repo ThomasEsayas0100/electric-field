@@ -19,6 +19,10 @@ document.addEventListener('mouseup', function(event) {
   isMouseDown = false;
 });
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function draw_arrow(array) {
   const [start_pos, end_pos, point_a, point_b] = array;
 

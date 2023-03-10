@@ -106,26 +106,31 @@ def heatmap3D(data):
     ax.tricontourf(x, y, Z, zdir='z', offset=-1.5 * 10 ** -10, cmap=color)
 
     ############################
-    fig = go.Figure(data=[go.Scatter3d(
+    fig_data = go.Scatter3d(
     x= x,
     y= y,
     z= Z,
-    layout_yaxis_range=[-4,4],
     mode='markers',
     marker=dict(
          size=3,
          colorscale='reds',  
          opacity=0.8
     )
-    )])
+    )
+    fig_layout = go.Layout(
+    scene = dict(
+        xaxis = dict(title="X"),
+        yaxis = dict(title="Y"),
+        zaxis = dict(title="Potential"),
+        aspectratio=dict(x=2, y=1, z=2)
+        )
+    )
+    fig = go.Figure(data=[fig_data], layout=fig_layout)
 
     # tight layout
     fig.update_layout(margin=dict(l=0, r=0, b=0, t=0))
     fig.write_html("heatmap3D.html") #Modifiy the html file
-    print("Executed")
-    # html = mpld3.fig_to_html(fig)
-    # with open('heatmap3Dt.html', 'w') as f:
-    #     f.write(html)
+
     plt.close()
     
 
